@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".MemberLogin">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textColor="@color/black"
+        android:text="로그인을 해주세요."/>
+
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:textColorHint="@color/black"
+        android:hint="아이디"
+        android:inputType="text"
+        style="@style/EditText"/>
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:hint="비밀번호"
+        android:inputType="textPassword"
+        android:textColorHint="@color/black"
+        android:background="@color/white"
+        style="@style/EditText"/>
+
+    <TextView
+        android:id="@+id/tv_login"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="로그인"/>
+
+</LinearLayout>

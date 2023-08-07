@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MyMemo</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="memo_list">메모 리스트</string>
+    <string name="memo">메모장</string>
+    <string name="settings">설정</string>
+    <string name="write_memo">메모 작성</string>
+</resources>
