@@ -3,63 +3,97 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".MemberJoin">
+    tools:context=".userActivity.MemberJoin">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/register_ground"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/nanumregular"
+            android:textSize="14sp"
+            android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="어플리케이션을 정상적으로 사용하기 위해서는 회원 가입이 필요합니다."/>
+            android:text="@string/join_messages1"/>
+
 
         <EditText
             android:id="@+id/et_email"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_margin="5dp"
-            android:background="@drawable/textview_yellow"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:hint="이메일은 필수 입력입니다."
-            android:inputType="text"
-            style="@style/EditTextInput"/>
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/nanumregular"
+            android:textSize="13sp"
+            android:background="@drawable/textview_white"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:hint="@string/join_messages2"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="5dp"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/nanumregular"
+            android:textSize="13sp"
+            android:background="@drawable/textview_white"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:hint="@string/join_messages3"
+            android:inputType="text"/>
 
         <EditText
             android:id="@+id/et_password1"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_margin="5dp"
-            android:background="@drawable/textview_pink"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/nanumregular"
+            android:textSize="13sp"
+            android:background="@drawable/textview_white"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
             android:inputType="textPassword"
-            android:hint="비밀번호를 입력해주세요."
-            style="@style/EditTextInput"/>
+            android:hint="@string/join_messages4"/>
 
         <EditText
             android:id="@+id/et_password2"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_margin="5dp"
-            android:background="@drawable/textview_pink"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/nanumregular"
+            android:textSize="13sp"
+            android:background="@drawable/textview_white"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
             android:inputType="textPassword"
-            android:hint="비밀번호를 다시 입력해주세요."
-            style="@style/EditTextInput"/>
+            android:hint="@string/join_messages5"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
             android:gravity="right"
             android:orientation="horizontal">
 
@@ -69,21 +103,23 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:textColor="@color/white"
-                android:background="@drawable/textview_blue"
+                android:background="@drawable/textview_yellow"
                 style="@style/TextView"
                 android:gravity="center"
-                android:text="처음으로"/>
+                android:text="@string/apphome"/>
 
             <TextView
                 android:id="@+id/tv_profile"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:layout_marginRight="10dp"
                 android:textColor="@color/white"
-                android:background="@drawable/textview_blue"
+                android:background="@drawable/textview_yellow"
                 style="@style/TextView"
                 android:gravity="center"
-                android:text="사진"/>
+                android:text="@string/profile_images"/>
 
             <TextView
                 android:id="@+id/tv_commit"
@@ -91,10 +127,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:textColor="@color/white"
-                android:background="@drawable/textview_blue"
+                android:background="@drawable/textview_pink"
                 style="@style/TextView"
                 android:gravity="center"
-                android:text="가입"/>
+                android:text="@string/sign"/>
         </LinearLayout>
 
     </LinearLayout>

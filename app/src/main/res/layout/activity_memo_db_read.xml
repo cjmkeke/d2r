@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MemoDBRead">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--상단바-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/et_title_result"
+                style="@style/EditTextTop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:hint="제목 입력"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:paddingLeft="10dp" />
+
+            <TextView
+                android:id="@+id/tv_delete"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:drawableLeft="@drawable/icons_delete_size"
+                android:gravity="center"
+                android:visibility="gone"
+                android:text="@string/remove" />
+
+            <TextView
+                android:id="@+id/tv_commit"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:drawableLeft="@drawable/icons_checked_size"
+                android:gravity="center"
+                android:text="@string/modify" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/MyColor_View_Line" />
+        <!--중앙-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:background="#C30000"/>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center"
+                    android:background="@color/MyColor_Pink"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="@string/connect_user"
+                    android:fontFamily="@font/lottemartbold"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/connectedUserRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center"
+                    android:visibility="visible"/>
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/et_mainText_result"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:padding="10dp"
+                tools:text="@string/main_text" />
+
+
+            <ScrollView
+                android:id="@+id/sv_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:visibility="gone">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/MyColor_View_Line" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="11sp"
+                        android:textColor="@color/MyColor_Pink"
+                        android:paddingLeft="5dp"
+                        android:fontFamily="@font/nanumbold"
+                        android:text="수정된 히스토리 내역"/>
+
+                    <TextView
+                        android:id="@+id/tv_edit_log"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:textColor="@color/black"
+                        android:paddingLeft="5dp"
+                        android:fontFamily="@font/nanumbold"
+                        android:text="Edit History"/>
+                </LinearLayout>
+
+
+            </ScrollView>
+
+            <View
+                android:id="@+id/view_center"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:background="@color/MyColor_View_Line" />
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_gravity="center"
+                layout="@layout/read_images_recyclerview" />
+        </LinearLayout>
+
+        <!--하단-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/MyColor_View_Line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/icons_font"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_history"
+                    style="@style/TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@drawable/icons_history_dw"
+                    android:text="@string/history_list" />
+
+                <!--                히스토리 삭제 메뉴-->
+                <TextView
+                    android:id="@+id/tv_history_delete"
+                    style="@style/TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:drawableLeft="@drawable/icons_delete_size"
+                    android:text="@string/history_remove" />
+
+                <TextView
+                    android:id="@+id/tv_private"
+                    style="@style/TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@drawable/icons_delete_size"/>
+
+                <TextView
+                    android:id="@+id/tv_photo_upload"
+                    style="@style/TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="사진 업로드"
+                    android:drawableLeft="@drawable/icons_gallery_size"/>
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/item_bottom_color" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

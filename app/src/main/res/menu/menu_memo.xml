@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/memo_write"
+        android:title="@string/write_memo"
+        android:icon="@drawable/icons_writing_size"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/memo_remove"
+        android:title="@string/all_memo_remove"
+        android:icon="@drawable/icons_trash_size"
+        app:showAsAction="ifRoom"/>
+</menu>

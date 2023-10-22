@@ -4,42 +4,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".MemberLogin">
+    tools:context=".userActivity.MemberLogin">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:textColor="@color/black"
-        android:text="로그인을 해주세요."/>
+        android:fontFamily="@font/nanumregular"
+        android:textSize="13sp"
+        android:text="@string/login_messages1"/>
 
     <EditText
         android:id="@+id/et_email"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white"
+        android:paddingLeft="10dp"
+        android:fontFamily="@font/nanumregular"
+        android:textSize="13sp"
+        android:background="@drawable/textview_white"
         android:textColorHint="@color/black"
-        android:hint="아이디"
-        android:inputType="text"
-        style="@style/EditText"/>
+        android:gravity="center_vertical"
+        android:hint="sample@email.com"
+        android:inputType="text"/>
 
     <EditText
         android:id="@+id/et_password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:hint="비밀번호"
+        android:fontFamily="@font/nanumregular"
+        android:textSize="13sp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"
+        android:hint="password"
         android:inputType="textPassword"
         android:textColorHint="@color/black"
-        android:background="@color/white"
-        style="@style/EditText"/>
+        android:background="@drawable/textview_white"/>
 
-    <TextView
-        android:id="@+id/tv_login"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:textColor="@color/black"
-        android:gravity="center"
-        android:text="로그인"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_yellow"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanumregular"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:text="@string/login"/>
+
+        <TextView
+            android:id="@+id/tv_re_password"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/button_yellow"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanumregular"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:text="@string/find_password"/>
+    </LinearLayout>
 
 </LinearLayout>
