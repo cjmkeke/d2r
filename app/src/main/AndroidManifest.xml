@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -14,23 +16,55 @@
         android:theme="@style/Theme.MyMemo"
         tools:targetApi="31">
         <activity
-            android:name=".MemberLogin"
-            android:exported="false"/>
+            android:name=".Calendar"
+            android:exported="false"
+            android:theme="@style/ProfilePopup"/>
+        <activity
+            android:name=".userActivity.UserProfileView"
+            android:exported="false"
+            android:theme="@style/ProfilePopup" />
+        <activity
+            android:name=".Version"
+            android:exported="false" />
+        <activity
+            android:name=".MemoMySpaceRead"
+            android:exported="false" />
+        <activity
+            android:name=".MemoMySpaceWriting"
+            android:exported="false" />
+        <activity
+            android:name=".userActivity.MemberSettings"
+            android:exported="false" />
+        <activity
+            android:name=".ShareUserList"
+            android:exported="false" />
+        <activity
+            android:name=".ShareFriendSearch"
+            android:exported="false" />
+        <activity
+            android:name=".MemoDBRead"
+            android:exported="false" />
+        <activity
+            android:name=".Template"
+            android:exported="false" />
+        <activity
+            android:name=".userActivity.MemberLogin"
+            android:exported="false" />
         <activity
             android:name=".LoginQuestionActivity"
             android:exported="false"
             android:theme="@style/MyPopupMenu" />
         <activity
-            android:name=".MemberJoin"
-            android:exported="false"/>
+            android:name=".userActivity.MemberJoin"
+            android:exported="false" />
         <activity
-            android:name=".WriteMemoActivity"
+            android:name=".MemoDBWriting"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

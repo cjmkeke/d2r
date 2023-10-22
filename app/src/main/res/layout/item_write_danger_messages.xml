@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/activity_corner"
+        android:fontFamily="@font/nanumregular"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:text="개인정보를 메모장에 입력하지 마세요.\n\n기본 설정 값은 메모장 비공개로 유지되어 있습니다. 공유를 원한다면 밑에 있는 체크박스에 공개를 눌러주세요." />
+
+    <Button
+        android:id="@+id/btn_01"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/nanumregular"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:text="확인"
+        android:background="@drawable/button_yellow"/>
+</LinearLayout>

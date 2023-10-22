@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".MemoDBWriting">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--상단바-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_title"
+                style="@style/EditTextTop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:background="@color/white"
+                android:hint="@string/title"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:paddingLeft="10dp" />
+
+            <TextView
+                android:id="@+id/tv_commit"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:drawableLeft="@drawable/icons_checked_size"
+                android:gravity="center"
+                android:text="@string/write_input" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/MyColor_View_Line" />
+        <!--중앙-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_mainText"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autoLink="all"
+                android:background="@null"
+                android:padding="10dp"
+                tools:text="@string/main_text" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/imagesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+        <!--하단-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/MyColor_View_Line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/icons_font"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_template"
+                    style="@style/TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@drawable/icons_template_dw"
+                    android:text="템플릿" />
+
+                <TextView
+                    android:id="@+id/iv_media_images_select"
+                    style="@style/TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:drawableLeft="@drawable/icons_photo_dw"
+                    android:text="@string/picture" />
+
+                <CheckBox
+                    android:id="@+id/cb_public"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanumbold"
+                    android:textSize="13sp"
+                    android:text="@string/share"/>
+
+                <TextView
+                    android:id="@+id/calendar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    style="@style/TextView"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/icons_calendar_dw"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanumbold"
+                    android:textSize="13sp"
+                    android:text="달력"/>
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/item_bottom_color" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

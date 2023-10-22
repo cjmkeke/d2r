@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.cjmkeke.mymemo.userActivity.MemberJoin;
+import com.cjmkeke.mymemo.userActivity.MemberLogin;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginQuestionActivity extends AppCompatActivity {

@@ -42,7 +42,7 @@
                 android:background="@drawable/textview_blue"
                 android:textColor="@color/white"
                 android:gravity="center"
-                android:text="로그인"/>
+                android:text="@string/login"/>
 
             <TextView
                 android:id="@+id/tv_signature"
@@ -52,7 +52,7 @@
                 android:background="@drawable/textview_yellow"
                 android:textColor="@color/white"
                 android:gravity="center"
-                android:text="회원가입"/>
+                android:text="@string/sign"/>
 
 
         </LinearLayout>

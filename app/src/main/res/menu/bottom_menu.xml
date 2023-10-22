@@ -7,6 +7,12 @@
         android:icon="@drawable/icons_memo_dw"
         app:showAsAction="ifRoom"/>
 
+<!--    <item android:id="@+id/savePhoneMemo"-->
+<!--        android:title="개인 메모장"-->
+<!--        android:icon="@drawable/icons_memo_dw"-->
+<!--        app:showAsAction="ifRoom"/>-->
+
+
     <item android:id="@+id/settings"
         android:title="@string/settings"
         android:icon="@drawable/icons_settings"
