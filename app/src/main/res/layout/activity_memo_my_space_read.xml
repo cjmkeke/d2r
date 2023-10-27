@@ -150,7 +150,7 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <include layout="@layout/item_bottom_color2" />
+                    <include layout="@layout/item_bg_color" />
 
                 </LinearLayout>
             </HorizontalScrollView>

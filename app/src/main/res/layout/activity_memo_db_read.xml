@@ -59,6 +59,28 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/MyColor_View_Line" />
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_bottom_color" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/MyColor_View_Line" />
+        <!--중앙-->
         <!--중앙-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,15 +128,21 @@
             </LinearLayout>
 
 
-            <EditText
-                android:id="@+id/et_mainText_result"
-                style="@style/EditText"
+            <jp.wasabeef.richeditor.RichEditor
+                android:id="@+id/editor_read"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:padding="10dp"
-                tools:text="@string/main_text" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+<!--            <EditText-->
+<!--                android:id="@+id/et_mainText_result"-->
+<!--                style="@style/EditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@null"-->
+<!--                android:padding="10dp"-->
+<!--                tools:text="@string/main_text" />-->
 
 
             <ScrollView

@@ -28,7 +28,7 @@
     </style>
 
     <style name="EditText" parent="@style/Widget.AppCompat.EditText">
-        <item name="fontFamily"> @font/nanumbold</item>
+        <item name="fontFamily"> @font/nanumregular</item>
         <item name="android:textSize">15sp</item>
         <item name="android:gravity"> clip_vertical</item>
         <item name="android:textColor">@color/black</item>

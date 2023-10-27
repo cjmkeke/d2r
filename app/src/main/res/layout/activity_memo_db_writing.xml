@@ -43,6 +43,26 @@
                 android:text="@string/write_input" />
 
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/MyColor_View_Line" />
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_bottom_color" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <View
             android:layout_width="match_parent"
@@ -55,15 +75,11 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/et_mainText"
-                style="@style/EditText"
+            <jp.wasabeef.richeditor.RichEditor
+                android:id="@+id/rich_editor"
+                android:layout_margin="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autoLink="all"
-                android:background="@null"
-                android:padding="10dp"
-                tools:text="@string/main_text" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -79,7 +95,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -105,6 +121,7 @@
                     android:layout_marginLeft="10dp"
                     android:drawableLeft="@drawable/icons_template_dw"
                     android:text="템플릿" />
+
 
                 <TextView
                     android:id="@+id/iv_media_images_select"
@@ -140,22 +157,10 @@
                     android:textSize="13sp"
                     android:text="달력"/>
 
+
+
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <include layout="@layout/item_bottom_color" />
-
-                </LinearLayout>
-            </HorizontalScrollView>
 
 
         </LinearLayout>
