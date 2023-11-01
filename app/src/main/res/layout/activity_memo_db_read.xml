@@ -71,7 +71,7 @@
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
-                <include layout="@layout/item_bottom_color" />
+                <include layout="@layout/item_text_edit" />
 
             </LinearLayout>
         </HorizontalScrollView>
@@ -134,16 +134,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
 
-<!--            <EditText-->
-<!--                android:id="@+id/et_mainText_result"-->
-<!--                style="@style/EditText"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:background="@null"-->
-<!--                android:padding="10dp"-->
-<!--                tools:text="@string/main_text" />-->
-
 
             <ScrollView
                 android:id="@+id/sv_history"
@@ -195,11 +185,18 @@
                 android:visibility="gone"
                 android:background="@color/MyColor_View_Line" />
 
+        <LinearLayout
+            android:id="@+id/ll_images_empty"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical">
             <include
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_gravity="center"
                 layout="@layout/read_images_recyclerview" />
+        </LinearLayout>
+
         </LinearLayout>
 
         <!--하단-->
@@ -280,7 +277,7 @@
                     android:visibility="gone"
                     android:orientation="horizontal">
 
-                    <include layout="@layout/item_bottom_color" />
+                    <include layout="@layout/item_text_edit" />
 
                 </LinearLayout>
             </HorizontalScrollView>

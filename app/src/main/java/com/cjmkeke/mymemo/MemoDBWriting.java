@@ -32,6 +32,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
@@ -46,6 +47,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -54,6 +57,8 @@ import android.widget.Toast;
 import com.cjmkeke.mymemo.library.ImageAdapter;
 import com.cjmkeke.mymemo.library.WriteDateList;
 import com.cjmkeke.mymemo.userActivity.MemberJoin;
+import com.google.android.gms.dynamic.IFragmentWrapper;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -66,6 +71,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -78,6 +84,7 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,6 +139,12 @@ public class MemoDBWriting extends AppCompatActivity {
     private String saveMainText;
     private static final int MEDIA_IMAGES = 105;
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 106;
+    private TextView uploadImages;
+    private List<Uri> imagesUriArray = new ArrayList<>();
+
+    private String downloadImagesUri;
+    private List<String> imagesList = new ArrayList<>();
+    private List<String> containsUrlList = new ArrayList<>();
 
     // 템플릿
     private Intent templateIntent;
@@ -208,6 +221,7 @@ public class MemoDBWriting extends AppCompatActivity {
         fontSize = findViewById(R.id.fontSize);
         fontBlackColor = findViewById(R.id.fontBackColor);
 
+
         template = findViewById(R.id.tv_template);
         recyclerView = findViewById(R.id.imagesRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -216,6 +230,8 @@ public class MemoDBWriting extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         mediaImages = findViewById(R.id.iv_media_images_select);
         richEditor = findViewById(R.id.rich_editor);
+        uploadImages = findViewById(R.id.tv_upload_images);
+
 
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -340,8 +356,11 @@ public class MemoDBWriting extends AppCompatActivity {
                         databaseReference.child("memoList").child(firebaseUser.getUid()).child(date).child("selectedDateString").setValue(selectedDateString);
                     }
                     long recyclerDate = writeDateList.getTimeFormatAdapterListLong();
-                    // TODO 데이터베이스에 저장
-//                    saveHtmlData(date);
+                    for (int i = 0; i < imagesList.size(); i++) {
+                        int finalI = i;
+                        String saveImages = imagesList.get(i);
+                        databaseReference.child("memoList").child(firebaseUser.getUid()).child(date).child("images").child("images_"+finalI).setValue(saveImages);
+                    }
                     databaseReference.child("memoList").child(firebaseUser.getUid()).child(date).child("mainText").setValue(saveMainText);
                     databaseReference.child("memoList").child(firebaseUser.getUid()).child(date).child("title").setValue(title.getText().toString());
                     databaseReference.child("memoList").child(firebaseUser.getUid()).child(date).child("profile").setValue(profileImagesUrl);
@@ -383,9 +402,7 @@ public class MemoDBWriting extends AppCompatActivity {
 
                     // 이미지 URI 리스트를 Firebase Storage에 업로드
                     if (selectedImageUris != null) {
-
                         String subName = email.substring(0, email.lastIndexOf("@"));
-
                         try {
                             for (int i = 0; i < selectedImageUris.size(); i++) {
                                 Uri imageUri = selectedImageUris.get(i);
@@ -435,7 +452,6 @@ public class MemoDBWriting extends AppCompatActivity {
 
                         }
 
-                    } else {
                     }
                 }
             }
@@ -458,15 +474,15 @@ public class MemoDBWriting extends AppCompatActivity {
             }
         });
 
-        richEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-            @Override
-            public void onTextChange(String text) {
-//                mainText.setText(text);
-
-                saveMainText = text;
-
-            }
-        });
+//        richEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
+//            @Override
+//            public void onTextChange(String text) {
+////                mainText.setText(text);
+//
+//                saveMainText = text;
+//
+//            }
+//        });
 
         boldPurple.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -474,121 +490,91 @@ public class MemoDBWriting extends AppCompatActivity {
                 richEditor.setTextColor(Color.parseColor("#673AB7"));
             }
         });
-
         blue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#2196F3"));
             }
         });
-
         black.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#001000"));
             }
         });
-
         boldGreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#4CAF50"));
             }
         });
-
         green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#8BC34A"));
             }
         });
-
         blackBlue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#3F51B5"));
             }
         });
-
         yellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#FFEB3B"));
             }
         });
-
         red.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#FF0000"));
             }
         });
-
         blackPink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#8F097E"));
             }
         });
-
-
         orange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#F44336"));
             }
         });
-
         pink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#E91E63"));
             }
         });
-
         purple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#9C27B0"));
             }
         });
-
-        //TODO 이미지 업로드
-        findViewById(R.id.tv_upload_images).setOnClickListener(new View.OnClickListener() {
+        uploadImages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+//                TODO 이미지 하나씩 업로드 하는 로직
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+                    intent.putExtra(MediaStore.ACTION_PICK_IMAGES, 1); // 사진 1장만 선택하도록 설정
+                    startActivityForResult(intent, MEDIA_IMAGES);
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false); // 다중 선택 비활성화
+                    intent.setType("image/*");
+                    startActivityForResult(Intent.createChooser(intent, "사진 1장만 가능합니다"), MEDIA_IMAGES);
+                }
 
 
-
-
-
-
-
-
-
-//                // 팝업 메뉴 레이아웃을 인플레이트합니다.
-//                View popupView = getLayoutInflater().inflate(R.layout.item_insert, null);
-//                // PopupWindow 객체를 생성하고 레이아웃을 설정합니다.
-//                PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                // 팝업 메뉴가 나타날 때 화면에 대한 설정을 추가합니다.
-//                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); // 배경을 투명하게 설정
-//                popupWindow.setFocusable(true); // 포커스 가능하도록 설정
-//                popupWindow.showAsDropDown(view);
-//
-//                TextView textView = popupView.findViewById(R.id.tv_send);
-//                EditText editText = popupView.findViewById(R.id.et_insert);
-//                editText.setHint("이미지 주소를 입력해주세요.");
-//                textView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        String str = editText.getText().toString();
-//                        richEditor.insertImage(str, "", 350, 280);
-//                    }
-//                });
             }
         });
-
         findViewById(R.id.insertYouTube).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -653,14 +639,12 @@ public class MemoDBWriting extends AppCompatActivity {
 
             }
         });
-
         findViewById(R.id.tv_strikethrough).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setStrikeThrough();
             }
         });
-
         fontBlackColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -725,23 +709,23 @@ public class MemoDBWriting extends AppCompatActivity {
                     }
                 });
 
+                popupView.findViewById(R.id.bg_color_white).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        richEditor.setTextBackgroundColor(Color.parseColor("#FFFFFF"));
+                        popupWindow.dismiss();
+                    }
+                });
+
             }
         });
-
         fontSize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 팝업 메뉴 레이아웃을 인플레이트합니다.
                 View popupView = getLayoutInflater().inflate(R.layout.item_font_size, null);
-
-                // PopupWindow 객체를 생성하고 레이아웃을 설정합니다.
                 PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                // 팝업 메뉴가 나타날 때 화면에 대한 설정을 추가합니다.
                 popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); // 배경을 투명하게 설정
                 popupWindow.setFocusable(true); // 포커스 가능하도록 설정
-
-//                popupWindow.showAtLocation(view, Gravity.CENTER_VERTICAL, 160, 950);
                 popupWindow.showAsDropDown(view);
 
                 // 팝업 메뉴의 아이템 클릭 리스너를 설정합니다.
@@ -823,6 +807,46 @@ public class MemoDBWriting extends AppCompatActivity {
             }
         });
 
+        //TODO 리치에디터 Text
+        richEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
+            @Override
+            public void onTextChange(String text) {
+                // 이미지가 업로드되었을 때만 containsUrlList에 추가
+                if (downloadImagesUri != null && !imagesList.contains(downloadImagesUri)) {
+                    imagesList.add(downloadImagesUri);
+                    String containsUrl = downloadImagesUri.split("%2F")[1].split("\\?alt=")[0];
+                    containsUrlList.add(containsUrl);
+                    Log.v("이미지 파일 확인", containsUrl);
+
+                }
+
+                for (int i = 0; i < containsUrlList.size(); i++) {
+                    if (downloadImagesUri != null && !text.contains(containsUrlList.get(i))) {
+                        if (downloadImagesUri != null) {
+                            String newURL = downloadImagesUri.split("%2F")[1].split("\\?alt=")[0];
+                            int finalI = i;
+
+                            String subName = email.substring(0, email.lastIndexOf("@"));
+                            StorageReference storageReference = storage.getReference().child(subName + "_memo_images").child(containsUrlList.get(i));
+                            storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    containsUrlList.remove(finalI);
+                                    Log.v("이미지 삭제 완료", "");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("이미지 삭제 실패", e.getMessage());
+                                }
+                            });
+                        }
+                    }
+                }
+                saveMainText = text;
+            }
+        });
+
 
     }
 
@@ -837,8 +861,20 @@ public class MemoDBWriting extends AppCompatActivity {
                     // 권한이 거부된 경우 사용자에게 설명하거나 다른 조치를 취할 수 있습니다.
                 }
                 break;
+
+            //TODO 이미지 하나씩 업로드 하는 로직
+            case REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 권한이 부여된 경우 실행할 코드
+                } else {
+                    // 권한이 거부된 경우 사용자에게 설명하거나 다른 조치를 취할 수 있습니다.
+                }
+                break;
+
+
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -865,5 +901,60 @@ public class MemoDBWriting extends AppCompatActivity {
             }
             adapter.notifyDataSetChanged();
         }
+//        TODO 이미지 하나씩 업로드 하는 로직
+        else if (requestCode == MEDIA_IMAGES && resultCode == RESULT_OK && data != null) {
+            if (data.getData() != null) {
+                Uri imagesUri = data.getData();
+
+//                richEditor.insertImage(imagesUri.toString(), "", 390, 280);
+//                Log.v("", imagesUri.toString());
+
+                int count = data.getClipData().getItemCount();
+                for (int i = 0; i < count; i++) {
+                    String fileUrl = data.getData().toString();
+                    Uri file = data.getClipData().getItemAt(i).getUri();
+                    imagesUriArray.add(file);
+
+
+                    if (imagesUriArray != null) {
+                        for (int j = 0; j < imagesUriArray.size(); j++) {
+                            final int fileNumber = j;
+                            Uri imagesUrl = imagesUriArray.get(j);
+                            String date = writeDateList.getTimeFormatAdapterList();
+
+                            String subName = email.substring(0, email.lastIndexOf("@"));
+                            String fileName = "image_" + j + "_" + System.currentTimeMillis() + "_" + date + ".jpg";
+                            StorageReference storageRef = storage.getReference().child(subName + "_memo_images").child(fileName);
+
+                            UploadTask uploadTask = storageRef.putFile(imagesUrl);
+                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    // 이미지가 성공적으로 업로드되면 다운로드 URL을 가져오고 삽입합니다.
+                                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            downloadImagesUri = uri.toString();
+                                            Log.v("aa", downloadImagesUri);
+
+                                            ViewGroup.LayoutParams params = richEditor.getLayoutParams();
+                                            int screenWidth = params.width;
+                                            richEditor.insertImage(downloadImagesUri, "이미지 업로드 실패", screenWidth, 280);
+                                            imagesUriArray.clear();
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                    }
+
+
+                }
+
+
+            }
+        }
+
     }
 }

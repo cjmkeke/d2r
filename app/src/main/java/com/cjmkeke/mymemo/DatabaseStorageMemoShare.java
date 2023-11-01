@@ -30,6 +30,7 @@ import java.util.HashSet;
 
 public class DatabaseStorageMemoShare extends Fragment {
 
+    private static final String TAG = "DatabaseStorageMemoShare";
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
     private RecyclerView recyclerView;
@@ -47,11 +48,9 @@ public class DatabaseStorageMemoShare extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_database_storage_memo_share, container, false);
-
+        Log.v(TAG,TAG);
         emptyMessages = viewGroup.findViewById(R.id.empty_messages);
         loginMessages = viewGroup.findViewById(R.id.tv_login_messages);
-//        emptyMessages.setVisibility(View.GONE);
-
         recyclerView = viewGroup.findViewById(R.id.memo_recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

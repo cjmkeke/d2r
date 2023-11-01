@@ -4,6 +4,7 @@ package com.cjmkeke.mymemo.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 
 public class AdapterMemo extends RecyclerView.Adapter<AdapterMemo.CustomViewHolder> {
 
-    private static String TAG = "AdapterMemoList";
+    private static String TAG = "AdapterMemo";
 
     private ArrayList<ModelMemoWrite> arrayList;
     private Context context;
@@ -60,8 +61,6 @@ public class AdapterMemo extends RecyclerView.Adapter<AdapterMemo.CustomViewHold
         holder.title.setText(arrayList.get(pos).getTitle());
         holder.profile.setClipToOutline(true);
         Glide.with(context).load(arrayList.get(pos).getProfile()).into(holder.profile);
-//        holder.title.setTextColor(arrayList.get(pos).getColorTitle());
-//        holder.mainText.setTextColor(arrayList.get(pos).getColorMainText());
         holder.email.setText(arrayList.get(pos).getEmail());
         holder.date.setText(arrayList.get(pos).getDate());
         holder.name.setText(arrayList.get(pos).getName());
@@ -90,20 +89,12 @@ public class AdapterMemo extends RecyclerView.Adapter<AdapterMemo.CustomViewHold
             this.email = itemView.findViewById(R.id.tv_email);
             this.date = itemView.findViewById(R.id.tv_date);
             this.name = itemView.findViewById(R.id.tv_name);
-//            this.share = itemView.findViewById(R.id.iv_share);
-
+            Log.v(TAG, TAG);
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseUser = firebaseAuth.getCurrentUser();
 
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference();
-
-//            share.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Toast.makeText(context, "공유하기", Toast.LENGTH_SHORT).show();
-//                }
-//            });
 
             mainTable.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,35 +102,12 @@ public class AdapterMemo extends RecyclerView.Adapter<AdapterMemo.CustomViewHold
                     int pos = getAdapterPosition();
                     String mainText = arrayList.get(pos).getMainText();
                     String title = arrayList.get(pos).getTitle();
-//                    int mainColor = arrayList.get(pos).getColorMainText();
-//                    int titleColor = arrayList.get(pos).getColorTitle();
                     String writeDate = arrayList.get(pos).getRecyclerDate();
                     String token = arrayList.get(pos).getToken();
                     String email = arrayList.get(pos).getEmail();
                     boolean publicKey = arrayList.get(pos).isPublicKey();
 
                     String pushKey = databaseReference.push().getKey();
-
-//                  PostViewUser
-//                  글을 보고 있는 유저의 데이터를 만들어 내는 작업
-//                    databaseReference.child("registeredUser").addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            profiles = snapshot.child(firebaseUser.getUid()).child("profile").getValue(String.class);
-//                            connectedName = snapshot.child(firebaseUser.getUid()).child("name").getValue(String.class);
-//                            databaseReference.child("memoList").child(token).child(writeDate).child("connectUserList").child(pushKey).child("token").setValue(firebaseUser.getUid());
-//                            databaseReference.child("memoList").child(token).child(writeDate).child("connectUserList").child(pushKey).child("profile").setValue(profiles);
-//                            databaseReference.child("memoList").child(token).child(writeDate).child("connectUserList").child(pushKey).child("name").setValue(connectedName);
-//                            databaseReference.child("memoList").child(token).child(writeDate).child("connectUserList").child(pushKey).child("pushKey").setValue(pushKey);
-//
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-
                     String images0 = arrayList.get(pos).getImages0();
                     String images1 = arrayList.get(pos).getImages1();
                     String images2 = arrayList.get(pos).getImages2();
@@ -151,8 +119,6 @@ public class AdapterMemo extends RecyclerView.Adapter<AdapterMemo.CustomViewHold
                     Intent intent = new Intent(context, MemoDBRead.class);
                     intent.putExtra("mainText", mainText);
                     intent.putExtra("title", title);
-//                    intent.putExtra("mainColor", mainColor);
-//                    intent.putExtra("titleColor", titleColor);
                     intent.putExtra("writeDate", writeDate);
                     intent.putExtra("token", token);
                     intent.putExtra("email", email);

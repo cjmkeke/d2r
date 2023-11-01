@@ -59,7 +59,7 @@
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
-                <include layout="@layout/item_bottom_color" />
+                <include layout="@layout/item_text_edit" />
 
             </LinearLayout>
         </HorizontalScrollView>
@@ -128,6 +128,7 @@
                     style="@style/TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
+                    android:visibility="gone"
                     android:layout_gravity="center"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="10dp"

@@ -4,6 +4,7 @@ package com.cjmkeke.mymemo.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 
 public class AdapterReadImagesView extends RecyclerView.Adapter<AdapterReadImagesView.CustomViewHolder> {
 
-    private static String TAG = "AdapterMemoList";
+    private static String TAG = "AdapterReadImagesView";
 
     private ArrayList<ModelImages> arrayList;
     private Context context;
@@ -70,7 +71,7 @@ public class AdapterReadImagesView extends RecyclerView.Adapter<AdapterReadImage
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.images = itemView.findViewById(R.id.iv_images);
-
+            Log.v(TAG,TAG);
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseUser = firebaseAuth.getCurrentUser();
 

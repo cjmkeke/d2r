@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class AdapterMyFriends extends RecyclerView.Adapter<AdapterMyFriends.CustomViewHolder> {
 
-    private static String TAG = "AdapterMemoList";
+    private static String TAG = "AdapterMyFriends";
 
     private ArrayList<ModelMyFriends> arrayList;
     private Context context;
@@ -82,8 +82,7 @@ public class AdapterMyFriends extends RecyclerView.Adapter<AdapterMyFriends.Cust
             this.email = itemView.findViewById(R.id.tv_email);
             this.IvProfile = itemView.findViewById(R.id.iv_profile);
             this.remove = itemView.findViewById(R.id.tv_remove);
-
-
+            Log.v(TAG,TAG);
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseUser = firebaseAuth.getCurrentUser();
             removeList = new ArrayList<>();

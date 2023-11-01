@@ -3,6 +3,8 @@ package com.cjmkeke.mymemo.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 
 public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.CustomViewHolder> {
 
-    private static String TAG = "AdapterMemoList";
+    private static String TAG = "AdapterMemoShare";
 
     private ArrayList<ModelMemoWrite> arrayList;
     private Context context;
@@ -56,12 +58,11 @@ public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.Cust
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
 
         int pos = holder.getAdapterPosition();
-        holder.mainText.setText(arrayList.get(pos).getMainText());
+//        holder.mainText.setText(arrayList.get(pos).getMainText());
+        holder.mainText.setText(Html.fromHtml(arrayList.get(pos).getMainText()));
         holder.title.setText(arrayList.get(pos).getTitle());
         holder.profile.setClipToOutline(true);
         Glide.with(context).load(arrayList.get(pos).getProfile()).into(holder.profile);
-//        holder.title.setTextColor(arrayList.get(pos).getColorTitle());
-//        holder.mainText.setTextColor(arrayList.get(pos).getColorMainText());
         holder.email.setText(arrayList.get(pos).getEmail());
         holder.date.setText(arrayList.get(pos).getDate());
         holder.name.setText(arrayList.get(pos).getName());
@@ -90,14 +91,12 @@ public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.Cust
             this.email = itemView.findViewById(R.id.tv_email);
             this.date = itemView.findViewById(R.id.tv_date);
             this.name = itemView.findViewById(R.id.tv_name);
+            Log.v(TAG, TAG);
 
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseUser = firebaseAuth.getCurrentUser();
-
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference();
-            
-            
             profile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -115,35 +114,12 @@ public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.Cust
                     int pos = getAdapterPosition();
                     String mainText = arrayList.get(pos).getMainText();
                     String title = arrayList.get(pos).getTitle();
-//                    int mainColor = arrayList.get(pos).getColorMainText();
-//                    int titleColor = arrayList.get(pos).getColorTitle();
                     String writeDate =arrayList.get(pos).getRecyclerDate();
                     String token = arrayList.get(pos).getToken();
                     String email = arrayList.get(pos).getEmail();
                     boolean publicKey = arrayList.get(pos).isPublicKey();
 
                     String pushKey = databaseReference.push().getKey();
-
-//                  PostViewUser
-//                  글을 보고 있는 유저의 데이터를 만들어 내는 작업
-//                    databaseReference.child("registeredUser").addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            profiles = snapshot.child(firebaseUser.getUid()).child("profile").getValue(String.class);
-//                            connectedName = snapshot.child(firebaseUser.getUid()).child("name").getValue(String.class);
-//                            databaseReference.child("memoList").child(token).child(writeDate).child("connectUserList").child(pushKey).child("token").setValue(firebaseUser.getUid());
-//                            databaseReference.child("memoList").child(token).child(writeDate).child("connectUserList").child(pushKey).child("profile").setValue(profiles);
-//                            databaseReference.child("memoList").child(token).child(writeDate).child("connectUserList").child(pushKey).child("name").setValue(connectedName);
-//                            databaseReference.child("memoList").child(token).child(writeDate).child("connectUserList").child(pushKey).child("pushKey").setValue(pushKey);
-//
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-
                     String images0 = arrayList.get(pos).getImages0();
                     String images1 = arrayList.get(pos).getImages1();
                     String images2 = arrayList.get(pos).getImages2();

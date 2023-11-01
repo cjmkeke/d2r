@@ -51,14 +51,24 @@
                 android:layout_marginTop="10dp"
 
                 android:background="#2196F3"/>
+
             <View
                 android:id="@+id/bg_color_bold_green"
                 android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_height="23dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#4CAF50" />
+
+            <View
+                android:id="@+id/bg_color_white"
+                android:layout_width="30dp"
+                android:layout_height="23dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="#4CAF50"/>
+                android:background="@drawable/activity_corner_line_10dp" />
+
         </LinearLayout>
 
 </LinearLayout>

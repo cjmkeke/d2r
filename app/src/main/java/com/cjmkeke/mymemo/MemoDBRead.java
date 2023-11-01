@@ -62,14 +62,11 @@ public class MemoDBRead extends AppCompatActivity {
 
     private static final String TAG = "MemoRead";
 
-    private View orange, pink, purple, boldPurple, black, blue, boldGreen, green, blackBlue, yellow, red, blackPink;
+    private View orange, pink, purple, boldPurple, black, blue, boldGreen, green, blackBlue, yellow, red, blackPink, white;
     private EditText title, mainText;
     private TextView commit, template, history, memoPrivate;
     private TextView mediaImages;
     private TextView delete, editLog, editLogDelete, galleryUpload;
-
-    private ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6;
-    private LinearLayout table1, table2, table3, table4, table5, table6;
     private Intent intent;
     private View center;
     private ScrollView svImagesView, svHistory;
@@ -116,12 +113,23 @@ public class MemoDBRead extends AppCompatActivity {
     private RichEditor richEditor;
     private String saveMainText;
     private TextView fontSize;
+    private LinearLayout showImagesRoom;
 
+    private TextView uploadImages;
+    private static final int MEDIA_IMAGES = 105;
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 106;
+    private List<Uri> imagesUriArray = new ArrayList<>();
+    private WriteDateList writeDateList;
+    private String downloadImagesUri;
+    private List<String> imagesList = new ArrayList<>();
+    private List<String> containsUrlList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memo_db_read);
+
+        showImagesRoom = findViewById(R.id.ll_images_empty);
 
         recyclerView = findViewById(R.id.connectedUserRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -150,9 +158,8 @@ public class MemoDBRead extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+        storage = FirebaseStorage.getInstance();
 
-
-        // TODO 색상 FIND
         blackPink = findViewById(R.id.color_black_pink);
         red = findViewById(R.id.color_red);
         boldPurple = findViewById(R.id.color_bold_purple);
@@ -166,9 +173,7 @@ public class MemoDBRead extends AppCompatActivity {
         blackBlue = findViewById(R.id.color_black_blue);
         yellow = findViewById(R.id.color_yellow);
         template = findViewById(R.id.tv_template);
-
         title = findViewById(R.id.et_title_result);
-//        mainText = findViewById(R.id.et_mainText_result);
         commit = findViewById(R.id.tv_commit);
         delete = findViewById(R.id.tv_delete);
         editLog = findViewById(R.id.tv_edit_log);
@@ -177,30 +182,13 @@ public class MemoDBRead extends AppCompatActivity {
         editLogDelete = findViewById(R.id.tv_history_delete);
         memoPrivate = findViewById(R.id.tv_private);
         galleryUpload = findViewById(R.id.tv_photo_upload);
-
         fontSize = findViewById(R.id.fontSize);
-//        svImagesView = findViewById(R.id.sv_read_images);
         center = findViewById(R.id.view_center);
-
-        imageView1 = findViewById(R.id.iv_images_01);
-        imageView2 = findViewById(R.id.iv_images_02);
-        imageView3 = findViewById(R.id.iv_images_03);
-        imageView4 = findViewById(R.id.iv_images_04);
-        imageView5 = findViewById(R.id.iv_images_05);
-        imageView6 = findViewById(R.id.iv_images_06);
-
-        table1 = findViewById(R.id.ll_images_table_1);
-        table2 = findViewById(R.id.ll_images_table_2);
-        table3 = findViewById(R.id.ll_images_table_3);
-        table4 = findViewById(R.id.ll_images_table_4);
-        table5 = findViewById(R.id.ll_images_table_5);
-        table6 = findViewById(R.id.ll_images_table_6);
+        uploadImages = findViewById(R.id.tv_upload_images);
 
         intent = getIntent();
         String resultMainText = intent.getStringExtra("mainText");
         String resultTitle = intent.getStringExtra("title");
-//        int resultMainTextColor = intent.getIntExtra("mainColor", 0);
-//        int resultTitleColor = intent.getIntExtra("titleColor", 0);
         writeDate = intent.getStringExtra("writeDate");
         writeToken = intent.getStringExtra("token");
         email = intent.getStringExtra("email");
@@ -218,10 +206,10 @@ public class MemoDBRead extends AppCompatActivity {
 
         title.setText(resultTitle);
         richEditor.setHtml(resultMainText);
+        writeDateList = new WriteDateList();
 
-
-        //TODO 게시판에 이미지 보이게
         recyclerViewImagesView.setVisibility(View.GONE);
+        showImagesRoom.setVisibility(View.GONE);
         databaseReference.child("memoList").child(writeToken).child(writeDate).child("boardImages").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -234,7 +222,9 @@ public class MemoDBRead extends AppCompatActivity {
                 }
 
                 if (!arrayListImagesView.isEmpty()) {
+                    showImagesRoom.setVisibility(View.VISIBLE);
                     recyclerViewImagesView.setVisibility(View.VISIBLE);
+                    Log.v("", arrayListImagesView.toString());
                 }
 
                 adapterImagesView = new AdapterReadImagesView(arrayListImagesView, MemoDBRead.this);
@@ -247,8 +237,6 @@ public class MemoDBRead extends AppCompatActivity {
             }
         });
 
-
-        // TODO 게시판 이미지 업로드
         galleryUpload.setVisibility(View.GONE);
         if (firebaseUser.getUid().equals(writeToken)){
             galleryUpload.setVisibility(View.VISIBLE);
@@ -367,7 +355,6 @@ public class MemoDBRead extends AppCompatActivity {
             });
         }
 
-        //TODO 히스토리 보이게/보이지 않게
         history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -461,8 +448,6 @@ public class MemoDBRead extends AppCompatActivity {
                     finish();
                 }
 
-                // TODO 이미지 업로드
-//                imagesUpload(subName, firebaseUser.getUid());
                 if (!selectedImageUris.isEmpty()) {
                     for (int i = 0; i < selectedImageUris.size(); i++) {
                         Uri uri = selectedImageUris.get(i);
@@ -527,10 +512,68 @@ public class MemoDBRead extends AppCompatActivity {
             }
         });
 
-        //TODO 에디터
+
+        // TODO
         richEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
             public void onTextChange(String text) {
+                // 이미지가 업로드되었을 때만 containsUrlList에 추가
+                if (downloadImagesUri != null && !imagesList.contains(downloadImagesUri)) {
+                    imagesList.add(downloadImagesUri);
+                    String containsUrl = downloadImagesUri.split("%2F")[1].split("\\?alt=")[0];
+                    containsUrlList.add(containsUrl);
+                    Log.v("이미지 파일 확인", containsUrl);
+                }
+
+                for (int i = 0; i < containsUrlList.size(); i++) {
+                    if (downloadImagesUri != null && !text.contains(containsUrlList.get(i))) {
+                        if (downloadImagesUri != null) {
+                            String newURL = downloadImagesUri.split("%2F")[1].split("\\?alt=")[0];
+                            int finalI = i;
+
+                            String subName = email.substring(0, email.lastIndexOf("@"));
+                            StorageReference storageReference = storage.getReference().child(subName + "_memo_images").child(containsUrlList.get(i));
+                            storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    containsUrlList.remove(finalI);
+                                    Log.v("이미지 삭제 완료", "");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("이미지 삭제 실패", e.getMessage());
+                                }
+                            });
+                        }
+                    }
+                }
+
+
+                // TODO 이 전에 이미지를 올렸던 것이 있으면 처리하는 부분
+                databaseReference.child("memoList").child(writeToken).child(writeDate).child("images").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        for (DataSnapshot imagesSnap : snapshot.getChildren()) {
+
+                            String imagesValue = imagesSnap.getValue(String.class);
+                            Log.v("", imagesValue);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+
+
+
+
                 saveMainText = text;
             }
         });
@@ -541,113 +584,72 @@ public class MemoDBRead extends AppCompatActivity {
                 richEditor.setTextColor(Color.parseColor("#673AB7"));
             }
         });
-
         blue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#2196F3"));
             }
         });
-
         black.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#001000"));
             }
         });
-
         boldGreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#4CAF50"));
             }
         });
-
         green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#8BC34A"));
             }
         });
-
         blackBlue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#3F51B5"));
             }
         });
-
         yellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#FFEB3B"));
             }
         });
-
         red.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#FF0000"));
             }
         });
-
         blackPink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#8F097E"));
             }
         });
-
-
         orange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#F44336"));
             }
         });
-
         pink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#E91E63"));
             }
         });
-
         purple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setTextColor(Color.parseColor("#9C27B0"));
             }
         });
-
-
-        //TODO
-        findViewById(R.id.tv_upload_images).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.v("","1");
-                // 팝업 메뉴 레이아웃을 인플레이트합니다.
-                View popupView = getLayoutInflater().inflate(R.layout.item_insert, null);
-                // PopupWindow 객체를 생성하고 레이아웃을 설정합니다.
-                PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                // 팝업 메뉴가 나타날 때 화면에 대한 설정을 추가합니다.
-                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); // 배경을 투명하게 설정
-                popupWindow.setFocusable(true); // 포커스 가능하도록 설정
-                popupWindow.showAsDropDown(view);
-
-                TextView textView = popupView.findViewById(R.id.tv_send);
-                EditText editText = popupView.findViewById(R.id.et_insert);
-                editText.setHint("이미지 주소를 입력해주세요.");
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String str = editText.getText().toString();
-                        richEditor.insertImage(str, "", 350, 280);
-                    }
-                });
-            }
-        });
-
         findViewById(R.id.insertYouTube).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -712,14 +714,12 @@ public class MemoDBRead extends AppCompatActivity {
 
             }
         });
-
         findViewById(R.id.tv_strikethrough).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 richEditor.setStrikeThrough();
             }
         });
-
         fontBlackColor = findViewById(R.id.fontBackColor);
         fontBlackColor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -785,26 +785,23 @@ public class MemoDBRead extends AppCompatActivity {
                     }
                 });
 
+                popupView.findViewById(R.id.bg_color_white).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        richEditor.setTextBackgroundColor(Color.parseColor("#FFFFFF"));
+                        popupWindow.dismiss();
+                    }
+                });
             }
         });
-
         fontSize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 팝업 메뉴 레이아웃을 인플레이트합니다.
                 View popupView = getLayoutInflater().inflate(R.layout.item_font_size, null);
-
-                // PopupWindow 객체를 생성하고 레이아웃을 설정합니다.
                 PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                // 팝업 메뉴가 나타날 때 화면에 대한 설정을 추가합니다.
                 popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); // 배경을 투명하게 설정
                 popupWindow.setFocusable(true); // 포커스 가능하도록 설정
-
-//                popupWindow.showAtLocation(view, Gravity.CENTER_VERTICAL, 160, 950);
                 popupWindow.showAsDropDown(view);
-
-                // 팝업 메뉴의 아이템 클릭 리스너를 설정합니다.
                 popupView.findViewById(R.id.font_size_7).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -813,48 +810,39 @@ public class MemoDBRead extends AppCompatActivity {
                         popupWindow.dismiss();
                     }
                 });
-
                 popupView.findViewById(R.id.font_size_8).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         richEditor.setFontSize(2);
                         fontSize.setText("8");
-
                         popupWindow.dismiss();
 
                     }
                 });
-
                 popupView.findViewById(R.id.font_size_9).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         richEditor.setFontSize(3);
                         fontSize.setText("9");
-
                         popupWindow.dismiss();
 
                     }
                 });
-
                 popupView.findViewById(R.id.font_size_10).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         richEditor.setFontSize(4);
                         fontSize.setText("10");
-
                         popupWindow.dismiss();
 
                     }
                 });
-
                 popupView.findViewById(R.id.font_size_11).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         richEditor.setFontSize(5);
                         fontSize.setText("11");
-
                         popupWindow.dismiss();
-
                     }
                 });
                 popupView.findViewById(R.id.font_size_12).setOnClickListener(new View.OnClickListener() {
@@ -862,24 +850,33 @@ public class MemoDBRead extends AppCompatActivity {
                     public void onClick(View v) {
                         richEditor.setFontSize(6);
                         fontSize.setText("12");
-
                         popupWindow.dismiss();
-
                     }
                 });
-
                 popupView.findViewById(R.id.font_size_13).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         richEditor.setFontSize(7);
                         fontSize.setText("13");
-
                         popupWindow.dismiss();
-
                     }
                 });
-
-
+            }
+        });
+        uploadImages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v("이미지 업로드","");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+                    intent.putExtra(MediaStore.ACTION_PICK_IMAGES, 1); // 사진 1장만 선택하도록 설정
+                    startActivityForResult(intent, MEDIA_IMAGES);
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false); // 다중 선택 비활성화
+                    intent.setType("image/*");
+                    startActivityForResult(Intent.createChooser(intent, "사진 1장만 가능합니다"), MEDIA_IMAGES);
+                }
             }
         });
 
@@ -945,7 +942,6 @@ public class MemoDBRead extends AppCompatActivity {
         // 다이얼로그 표시
         dialog.show();
     }
-
     private void showDeleteHistoryDialog(String writeDate) {
         // 다이얼로그를 표시하기 전에 이전 다이얼로그를 닫습니다.
         dismissDialog();
@@ -988,13 +984,11 @@ public class MemoDBRead extends AppCompatActivity {
         // 다이얼로그 표시
         dialog.show();
     }
-
     private void dismissDialog() {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -1002,14 +996,12 @@ public class MemoDBRead extends AppCompatActivity {
         removeSpecificConnectUser(pushKey);
         dismissDialog();
     }
-
     @Override
     protected void onStop() {
         super.onStop();
         remove();
         removeSpecificConnectUser(pushKey);
     }
-
     private void removeSpecificConnectUser(String userKeyToRemove) {
         DatabaseReference connectUserRef = databaseReference
                 .child("memoList")
@@ -1020,7 +1012,6 @@ public class MemoDBRead extends AppCompatActivity {
         // 특정 유저의 데이터를 삭제합니다.
         connectUserRef.child(userKeyToRemove).removeValue();
     }
-
     private void remove() {
         DatabaseReference connectUserListRef = databaseReference.child("memoList")
                 .child(writeToken)
@@ -1052,8 +1043,6 @@ public class MemoDBRead extends AppCompatActivity {
             }
         });
     }
-
-    // ...
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -1065,6 +1054,15 @@ public class MemoDBRead extends AppCompatActivity {
                     // 권한이 거부된 경우 사용자에게 설명하거나 다른 조치를 취할 수 있습니다.
                 }
                 break;
+
+            case REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 권한이 부여된 경우 실행할 코드
+                } else {
+                    // 권한이 거부된 경우 사용자에게 설명하거나 다른 조치를 취할 수 있습니다.
+                }
+                break;
+
         }
     }
 
@@ -1072,88 +1070,62 @@ public class MemoDBRead extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == MEDIA_IMAGES_MULTI && resultCode == RESULT_OK && data != null) {
+                if (requestCode == MEDIA_IMAGES && resultCode == RESULT_OK && data != null) {
+                Log.v("셀렉트 2", "");
 
-            if (data.getClipData() != null) {
-                int count = Math.min(data.getClipData().getItemCount(), maxNumPhotosAndVideos); // 최대 6개 이미지 선택
-                for (int i = 0; i < count; i++) {
-                    Uri imageUri = data.getClipData().getItemAt(i).getUri();
-                    selectedImageUris.add(imageUri);
+                if (data.getData() != null) {
+                    Uri imagesUri = data.getData();
+
+//                richEditor.insertImage(imagesUri.toString(), "", 390, 280);
+//                Log.v("", imagesUri.toString());
+
+                    int count = data.getClipData().getItemCount();
+                    for (int i = 0; i < count; i++) {
+                        String fileUrl = data.getData().toString();
+                        Uri file = data.getClipData().getItemAt(i).getUri();
+                        imagesUriArray.add(file);
+
+                        if (imagesUriArray != null) {
+                            for (int j = 0; j < imagesUriArray.size(); j++) {
+                                final int fileNumber = j;
+                                Uri imagesUrl = imagesUriArray.get(j);
+                                String date = writeDateList.getTimeFormatAdapterList();
+
+                                String subName = email.substring(0, email.lastIndexOf("@"));
+                                String fileName = "image_" + j + "_" + System.currentTimeMillis() + "_" + date + ".jpg";
+                                StorageReference storageRef = storage.getReference().child(subName + "_memo_images").child(fileName);
+
+                                UploadTask uploadTask = storageRef.putFile(imagesUrl);
+                                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        // 이미지가 성공적으로 업로드되면 다운로드 URL을 가져오고 삽입합니다.
+                                        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                downloadImagesUri = uri.toString();
+                                                Log.v("aa", downloadImagesUri);
+
+                                                ViewGroup.LayoutParams params = richEditor.getLayoutParams();
+                                                int screenWidth = params.width;
+                                                richEditor.insertImage(downloadImagesUri, "이미지 업로드 실패", screenWidth, 280);
+                                                imagesUriArray.clear();
+                                            }
+                                        });
+                                    }
+                                });
+
+                            }
+                        }
+
+
+                    }
+
+
                 }
-
-            } else if (data.getData() != null) {
-                Uri imageUri = data.getData();
-                selectedImageUris.add(imageUri);
             }
 //        }
         }
-    }
-
-    private void deleteImagesFile() {
-        if (images0 != null && !images0.equals(null)) {
-            StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(images0);
-            imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                }
-            });
-
-        }
-
-        if (images1 != null && !images1.equals(null)) {
-            StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(images1);
-            imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                }
-            });
-        }
-
-        if (images2 != null && !images2.equals(null)) {
-            StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(images2);
-            imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                }
-            });
-        }
-
-        if (images3 != null && !images3.equals(null)) {
-            StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(images3);
-            imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                }
-            });
-        }
-
-        if (images4 != null && !images4.equals(null)) {
-            StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(images4);
-            imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                }
-            });
-        }
-
-        if (images5 != null && !images5.equals(null)) {
-            StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(images5);
-            imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                }
-            });
-        }
-
-        if (images6 != null && !images6.equals(null)) {
-            StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(images6);
-            imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                }
-            });
-        }
-    }
 
     private void imagesUpload(String subName, String userUid) {
 

@@ -1,11 +1,12 @@
 package com.cjmkeke.mymemo.modelClass;
 
+import java.util.Map;
+
 public class ModelMemoWrite {
 
     private String title;
     private String mainText;
     private String profile;
-    private String images;
     private String token;
     private String email;
     private String date;
@@ -27,6 +28,12 @@ public class ModelMemoWrite {
     private String colorTitle;
     private String colorMainText;
     private boolean publicKey;
+
+//    private Map<String, String> images;
+//
+//    public void setImages(Map<String, String> images) {
+//        this.images = images;
+//    }
 
     public ModelImages getBoardImages() {
         return boardImages;
@@ -197,11 +204,4 @@ public class ModelMemoWrite {
         this.profile = profile;
     }
 
-    public String getImages() {
-        return images;
-    }
-
-    public void setImages(String images) {
-        this.images = images;
-    }
 }
