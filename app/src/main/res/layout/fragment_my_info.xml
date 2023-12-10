@@ -195,48 +195,48 @@
                 android:autoLink="email"
                 android:text="이메일 : cjmkeke@naver.com"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:fontFamily="@font/nanumbold"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:text="도움 받는 사이트 / 이미지"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:fontFamily="@font/nanumregular"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:autoLink="all"
-                android:text="https://www.flaticon.com/"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:fontFamily="@font/nanumregular"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:autoLink="all"
-                android:text="https://github.com/bumptech/glide"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:fontFamily="@font/nanumregular"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:text="네이버 나눔글꼴, 롯데 폰트"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:gravity="center"-->
+<!--                android:fontFamily="@font/nanumbold"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="13sp"-->
+<!--                android:text="도움 받는 사이트 / 이미지"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:gravity="center"-->
+<!--                android:fontFamily="@font/nanumregular"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="13sp"-->
+<!--                android:autoLink="all"-->
+<!--                android:text="https://www.flaticon.com/"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:gravity="center"-->
+<!--                android:fontFamily="@font/nanumregular"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="13sp"-->
+<!--                android:autoLink="all"-->
+<!--                android:text="https://github.com/bumptech/glide"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:gravity="center"-->
+<!--                android:fontFamily="@font/nanumregular"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="13sp"-->
+<!--                android:text="네이버 나눔글꼴, 롯데 폰트"/>-->
         </LinearLayout>
 
 

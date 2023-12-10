@@ -14,32 +14,26 @@
                 android:id="@+id/calendarView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 app:mcv_selectionMode="multiple"
-                app:mcv_selectionColor="#FFA300"
-                app:mcv_headerTextAppearance="@style/CalendarCellInDate"
-                app:mcv_weekDayTextAppearance="@style/CalendarCellInDate"
-                app:mcv_dateTextAppearance="@style/CalendarCellInDate"
-                app:mcv_arrowColor="@color/white"
-                tools:ignore="MissingConstraints" />
+                android:layout_margin="10dp"/>
 
-<!--            <EditText-->
-<!--                android:id="@+id/et_calendar_input"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:layout_marginLeft="10dp"-->
-<!--                android:layout_marginRight="10dp"-->
-<!--                android:hint="입력"-->
-<!--                android:textColorHint="@color/black"-->
-<!--                android:textColor="@color/black"/>-->
-<!--            <Button-->
-<!--                android:id="@+id/btn_calendar_commit"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:layout_marginLeft="10dp"-->
-<!--                android:layout_marginRight="10dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:text="aaa"/>-->
+            <EditText
+                android:id="@+id/et_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:hint="입력"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"/>
+            <Button
+                android:id="@+id/btn_calendar"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:text="aaa"/>
         </LinearLayout>
 
 </FrameLayout>

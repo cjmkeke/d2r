@@ -7,6 +7,11 @@
         android:icon="@drawable/icons_writing_size"
         app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/memo_remove_check"
+        android:title="선택 삭제"
+        android:icon="@drawable/icons_check_trash_size"
+        app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/memo_remove"
         android:title="@string/all_memo_remove"
         android:icon="@drawable/icons_trash_size"

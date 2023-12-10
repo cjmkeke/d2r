@@ -1,6 +1,7 @@
 package com.cjmkeke.mymemo;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -41,6 +42,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DatabaseStorageMain extends Fragment {
@@ -52,7 +54,6 @@ public class DatabaseStorageMain extends Fragment {
     private DatabaseReference databaseReference;
     private String email;
     private String writeDateList;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,6 +76,8 @@ public class DatabaseStorageMain extends Fragment {
 
                 }
             });
+
+
         } catch (NullPointerException nullPointerException) {
 
         }
@@ -104,6 +107,7 @@ public class DatabaseStorageMain extends Fragment {
         subMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.PopupMenuStyle);
                 PopupMenu popup = new PopupMenu(contextThemeWrapper, view);
                 MenuInflater inflater = popup.getMenuInflater();
@@ -131,6 +135,75 @@ public class DatabaseStorageMain extends Fragment {
 
                                     }
                                 } catch (NullPointerException e) {
+                                }
+
+                                break;
+
+
+                            //TODO 체크삭제
+                            case R.id.memo_remove_check:
+
+
+                                try {
+
+                                    databaseReference.child("memoList").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot snap : snapshot.getChildren()) {
+                                                String date = snap.child("recyclerDate").getValue(String.class);
+                                                boolean isChecked = snap.child("remove").getValue(Boolean.class);
+                                                if (isChecked) {
+                                                    databaseReference.child("memoList").child(firebaseUser.getUid()).child(date).child("images").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            List<String> list = new ArrayList<>();
+                                                            for (DataSnapshot data : snapshot.getChildren()) {
+                                                                String str = data.getValue(String.class);
+                                                                String shotFileName = str.substring(str.indexOf("%2F") + 3, str.lastIndexOf("?alt"));
+                                                                list.add(shotFileName);
+//                                                            Log.v("mm",list.toString());
+
+
+                                                                for (int i = 0; i < list.size(); i++) {
+                                                                    String subEmail = email.substring(0, email.lastIndexOf("@"));
+
+                                                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                                                    StorageReference storageReference = storage.getReference().child(subEmail + "_memo_images").child(list.get(i));
+                                                                    storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void unused) {
+                                                                            Log.v("파일삭제", "");
+
+
+                                                                        }
+                                                                    });
+                                                                }
+
+
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+                                                    databaseReference.child("memoList").child(firebaseUser.getUid()).child(snap.getKey()).removeValue();
+
+                                                } else {
+                                                    Log.v("false", "");
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Log.v("Remove Error DatabaseStrorageMain", error.toString());
+                                        }
+                                    });
+
+                                } catch (Exception e) {
+                                    Toast.makeText(contextThemeWrapper, R.string.service_error, Toast.LENGTH_SHORT).show();
                                 }
 
                                 break;

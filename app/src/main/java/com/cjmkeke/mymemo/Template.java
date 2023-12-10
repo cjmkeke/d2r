@@ -27,14 +27,6 @@ public class Template extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_template);
-        templateBackColorOrange = findViewById(R.id.color_template_orange);
-        template1 = findViewById(R.id.iv_template_1);
-        template2 = findViewById(R.id.iv_template_2);
-        template3 = findViewById(R.id.iv_template_3);
-        template4 = findViewById(R.id.iv_template_4);
-        template5 = findViewById(R.id.iv_template_5);
-        template6 = findViewById(R.id.iv_template_6);
-
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("templateUrl");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {

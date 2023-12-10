@@ -3,6 +3,7 @@ package com.cjmkeke.mymemo.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,8 +24,11 @@ import com.cjmkeke.mymemo.modelClass.ModelMemoWrite;
 import com.cjmkeke.mymemo.userActivity.UserProfileView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -49,7 +52,7 @@ public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.Cust
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_memo_share, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recyclerview_memo_share, parent, false);
         CustomViewHolder holder = new CustomViewHolder(view);
         return holder;
     }
@@ -58,14 +61,31 @@ public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.Cust
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
 
         int pos = holder.getAdapterPosition();
-//        holder.mainText.setText(arrayList.get(pos).getMainText());
         holder.mainText.setText(Html.fromHtml(arrayList.get(pos).getMainText()));
         holder.title.setText(arrayList.get(pos).getTitle());
         holder.profile.setClipToOutline(true);
         Glide.with(context).load(arrayList.get(pos).getProfile()).into(holder.profile);
         holder.email.setText(arrayList.get(pos).getEmail());
-        holder.date.setText(arrayList.get(pos).getDate());
-        holder.name.setText(arrayList.get(pos).getName());
+        holder.date.setText(" "+arrayList.get(pos).getDate());
+        holder.name.setText(" "+arrayList.get(pos).getName());
+
+        if (arrayList.get(pos).getBackgroundColor() != null){
+            holder.bg.setBackgroundColor(Color.parseColor(arrayList.get(pos).getBackgroundColor()));
+        } else {
+
+        }
+
+        if (arrayList.get(pos).getTitleColor() != null ){
+            holder.date.setTextColor(Color.parseColor(arrayList.get(pos).getTitleColor()));
+            holder.title.setTextColor(Color.parseColor(arrayList.get(pos).getTitleColor()));
+            holder.mainText.setTextColor(Color.parseColor(arrayList.get(pos).getTitleColor()));
+            holder.email.setTextColor(Color.parseColor(arrayList.get(pos).getTitleColor()));
+            holder.name.setTextColor(Color.parseColor(arrayList.get(pos).getTitleColor()));
+            holder.sDate.setTextColor(Color.parseColor(arrayList.get(pos).getTitleColor()));
+            holder.sNick.setTextColor(Color.parseColor(arrayList.get(pos).getTitleColor()));
+            holder.sEmail.setTextColor(Color.parseColor(arrayList.get(pos).getTitleColor()));
+        }
+
     }
 
     @Override
@@ -77,10 +97,12 @@ public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.Cust
 
         private ImageView profile;
         private TextView title, mainText;
-        private LinearLayout mainTable;
+        private LinearLayout mainTable, bg;
         private TextView email, date, name;
         private String profiles;
         private String connectedName;
+
+        private TextView sEmail, sNick, sDate;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,6 +113,11 @@ public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.Cust
             this.email = itemView.findViewById(R.id.tv_email);
             this.date = itemView.findViewById(R.id.tv_date);
             this.name = itemView.findViewById(R.id.tv_name);
+            this.bg = itemView.findViewById(R.id.ll_bg_share);
+
+            this.sEmail = itemView.findViewById(R.id.tv_set_email);
+            this.sNick = itemView.findViewById(R.id.tv_set_nick);
+            this.sDate = itemView.findViewById(R.id.tv_set_date);
             Log.v(TAG, TAG);
 
             firebaseAuth = FirebaseAuth.getInstance();
@@ -114,10 +141,11 @@ public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.Cust
                     int pos = getAdapterPosition();
                     String mainText = arrayList.get(pos).getMainText();
                     String title = arrayList.get(pos).getTitle();
-                    String writeDate =arrayList.get(pos).getRecyclerDate();
+                    String writeDate = arrayList.get(pos).getRecyclerDate();
                     String token = arrayList.get(pos).getToken();
                     String email = arrayList.get(pos).getEmail();
                     boolean publicKey = arrayList.get(pos).isPublicKey();
+                    String titleFontColor = arrayList.get(pos).getTitleColor();
 
                     String pushKey = databaseReference.push().getKey();
                     String images0 = arrayList.get(pos).getImages0();
@@ -139,7 +167,7 @@ public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.Cust
                     intent.putExtra("publicKey", publicKey);
                     intent.putExtra("pushKey", pushKey);
                     intent.putExtra("connectedTokenKey", firebaseUser.getUid());
-//                    intent.putExtra("connectedName", connectedName);
+                    intent.putExtra("titleFontColor", titleFontColor);
 
                     intent.putExtra("images0", images0);
                     intent.putExtra("images1", images1);
@@ -148,6 +176,25 @@ public class AdapterMemoShare extends RecyclerView.Adapter<AdapterMemoShare.Cust
                     intent.putExtra("images4", images4);
                     intent.putExtra("images5", images5);
                     intent.putExtra("images6", images6);
+
+                    if (firebaseUser.getUid() != token) {
+                        databaseReference.child("registeredUser").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String profileImages = snapshot.child("profile").getValue(String.class); // 본인 프로필을 받아오자.
+                                String profileEmail = snapshot.child("email").getValue(String.class);
+                                databaseReference.child("memoList").child(token).child(writeDate).child("connectUser").child(firebaseUser.getUid()).child("profile").setValue(profileImages);
+                                databaseReference.child("memoList").child(token).child(writeDate).child("connectUser").child(firebaseUser.getUid()).child("email").setValue(profileEmail);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    } else {
+
+                    }
 
                     context.startActivity(intent);
                 }

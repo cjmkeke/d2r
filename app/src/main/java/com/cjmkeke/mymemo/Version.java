@@ -25,7 +25,7 @@ public class Version extends AppCompatActivity {
     private int resultNewVersion;
     private String resultMessages;
     private String newResultMessages;
-    private final int appVersion = 2;
+    private final int appVersion = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -29,18 +29,6 @@ public class MemoMySpaceRead extends AppCompatActivity {
 
         mainText = findViewById(R.id.et_mainText);
 
-        pink = findViewById(R.id.color_pink);
-        orange = findViewById(R.id.color_orange);
-        purple = findViewById(R.id.color_purple);
-        boldPurple = findViewById(R.id.color_bold_purple);
-        blue = findViewById(R.id.color_blue);
-        black = findViewById(R.id.color_black);
-        boldGreen = findViewById(R.id.color_bold_green);
-        green = findViewById(R.id.color_green);
-        blackBlue = findViewById(R.id.color_black_blue);
-        yellow = findViewById(R.id.color_yellow);
-//        white = findViewById(R.id.color_white);
-        blackPink = findViewById(R.id.color_black_pink);
 
         currentColor = Color.BLACK;
 

@@ -1,4 +1,4 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/icons_text_adjustment"
-        android:width="25dp" android:height="25dp"/>
+        android:width="30dp" android:height="30dp"/>
 </layer-list>

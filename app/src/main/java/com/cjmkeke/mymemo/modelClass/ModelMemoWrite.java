@@ -1,5 +1,6 @@
 package com.cjmkeke.mymemo.modelClass;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ModelMemoWrite {
@@ -14,9 +15,7 @@ public class ModelMemoWrite {
     private long recyclerDateList;
     private String template;
     private String name;
-
     private ModelImages boardImages;
-
     private String images0;
     private String images1;
     private String images2;
@@ -24,12 +23,74 @@ public class ModelMemoWrite {
     private String images4;
     private String images5;
     private String images6;
-
     private String colorTitle;
     private String colorMainText;
     private boolean publicKey;
+    private boolean remove;
+    private String backgroundColor;
+    private String titleColor;
+    private String editLog;
+    private HashMap<String, String> canlendarDayToMemo = new HashMap<>();
+    private HashMap<String, String> canlendarDay = new HashMap<>();
+    private Map<String, ConnectUser> connectUser;
 
-//    private Map<String, String> images;
+    public String getTitleColor() {
+        return titleColor;
+    }
+
+    public void setTitleColor(String titleColor) {
+        this.titleColor = titleColor;
+    }
+
+    public Map<String, ConnectUser> getConnectUser() {
+        return connectUser;
+    }
+
+    public void setConnectUser(Map<String, ConnectUser> connectUser) {
+        this.connectUser = connectUser;
+    }
+
+    public HashMap<String, String> getCanlendarDayToMemo() {
+        return canlendarDayToMemo;
+    }
+
+    public void setCanlendarDayToMemo(HashMap<String, String> canlendarDayToMemo) {
+        this.canlendarDayToMemo = canlendarDayToMemo;
+    }
+
+    public HashMap<String, String> getCanlendarDay() {
+        return canlendarDay;
+    }
+
+    public void setCanlendarDay(HashMap<String, String> canlendarDay) {
+        this.canlendarDay = canlendarDay;
+    }
+
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public String getEditLog() {
+        return editLog;
+    }
+
+    public void setEditLog(String editLog) {
+        this.editLog = editLog;
+    }
+
+    public boolean isRemove() {
+        return remove;
+    }
+
+    public void setRemove(boolean remove) {
+        this.remove = remove;
+    }
+
+    //    private Map<String, String> images;
 //
 //    public void setImages(Map<String, String> images) {
 //        this.images = images;

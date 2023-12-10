@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cjmkeke.mymemo.modelClass.ModelConnectUser;
+import com.cjmkeke.mymemo.modelClass.ModelMemoWrite;
 import com.cjmkeke.mymemo.modelClass.ModelMyFriends;
 import com.cjmkeke.mymemo.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +27,7 @@ public class AdapterConnectedUser extends RecyclerView.Adapter<AdapterConnectedU
 
     private static String TAG = "AdapterConnectedUser";
 
-    private ArrayList<ModelMyFriends> arrayList;
+    private ArrayList<ModelConnectUser> arrayList;
     private Context context;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference addFriendsRef;
@@ -33,11 +35,13 @@ public class AdapterConnectedUser extends RecyclerView.Adapter<AdapterConnectedU
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
 
-    private ArrayList<String> removeList;
 
-    public AdapterConnectedUser(ArrayList<ModelMyFriends> arrayList, Context context) {
+    public AdapterConnectedUser(ArrayList<ModelConnectUser> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
+    }
+
+    public AdapterConnectedUser(ArrayList<String> imageUrls) {
     }
 
     @NonNull
@@ -52,12 +56,7 @@ public class AdapterConnectedUser extends RecyclerView.Adapter<AdapterConnectedU
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
 
         int pos = holder.getAdapterPosition();
-        if (arrayList.get(pos).getProfile() != null) {
-            Glide.with(holder.itemView)
-                    .load(arrayList.get(position).getProfile())
-                    .circleCrop()
-                    .into(holder.IvProfile);
-        }
+        Glide.with(context).load(arrayList.get(pos).getProfile()).circleCrop().into(holder.ivProfiles);
 
     }
 
@@ -68,26 +67,25 @@ public class AdapterConnectedUser extends RecyclerView.Adapter<AdapterConnectedU
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView IvProfile;
+        private ImageView ivProfiles;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.IvProfile = itemView.findViewById(R.id.iv_profile);
+            this.ivProfiles = itemView.findViewById(R.id.iv_profile);
+
 
             firebaseAuth = FirebaseAuth.getInstance();
             firebaseUser = firebaseAuth.getCurrentUser();
-            removeList = new ArrayList<>();
-
             firebaseDatabase = FirebaseDatabase.getInstance();
-            IvProfile.setOnClickListener(new View.OnClickListener() {
+
+            ivProfiles.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int pos = getAdapterPosition();
-                    String name = arrayList.get(pos).getName();
-                    Toast.makeText(context, "선택된 유저는 " + name +" 입니다.", Toast.LENGTH_SHORT).show();
+                    String email = arrayList.get(pos).getEmail();
+                    Toast.makeText(context, email, Toast.LENGTH_SHORT).show();
                 }
             });
-
 
         }
     }

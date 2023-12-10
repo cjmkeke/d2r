@@ -28,8 +28,22 @@
                 android:maxLines="1"
                 android:background="@color/white"
                 android:hint="@string/title"
-                android:inputType="textMultiLine|textNoSuggestions"
+                android:inputType="text"
                 android:paddingLeft="10dp" />
+
+            <TextView
+                android:id="@+id/tv_settings_write"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:background="@drawable/title_color"
+                android:padding="5dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/nanumregular"
+                android:textSize="10sp"
+                android:textColor="@color/white"
+                android:text="색상"
+                android:layout_gravity="center"
+                android:gravity="center"/>
 
             <TextView
                 android:id="@+id/tv_commit"
@@ -47,6 +61,175 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/MyColor_View_Line" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/MyColor_View_Line" />
+
+        <!--        중앙부터 하단까지 쓰는 레이아웃-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_editor_padding"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <jp.wasabeef.richeditor.RichEditor
+                    android:id="@+id/rich_editor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_calendar_view_write"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendar_xml_write"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:mcv_selectionMode="multiple"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_code_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="HTML 편집"
+                        android:textColor="@color/MyColor_Yellow"
+                        android:textSize="14sp"
+                        android:paddingStart="10dp"
+                        android:fontFamily="@font/nanumextrabold"
+                        android:gravity="center"/>
+
+                    <Button
+                        android:id="@+id/btn_html_src"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:background="@drawable/button_yellow"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="사진 넣기"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/nanumextrabold"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/et_read_code_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_gravity="top"
+                    android:background="@null"
+                    android:fontFamily="@font/nanumregular"
+                    android:gravity="top"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--하단-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/MyColor_View_Line" />
+
+        <LinearLayout
+            android:id="@+id/ll_calendar_memo_view_write"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icons_calendar_size"
+                android:fontFamily="@font/nanumregular"
+                android:paddingTop="10dp"
+                android:paddingStart="10dp"
+                android:text="일정 등록"
+                android:textColor="@color/black" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:scrollbars="vertical">
+        <TextView
+            android:id="@+id/tv_calendar_view_write"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanumregular"
+            android:textSize="13sp"
+            android:padding="10dp"
+            android:textColor="@color/black"/>
+    </ScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_calendar_view_keyboard_write"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_calendar_input_write"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:inputType="text"
+                    android:maxLength="10"
+                    android:paddingStart="10dp"
+                    android:background="@drawable/textview_white"
+                    android:textSize="12sp"
+                    android:hint="글자 수는 최대 10까지 지원됩니다"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btn_calendar_read_view_write"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/button_yellow"
+                    android:fontFamily="@font/nanumregular"
+                    android:textSize="13sp"
+                    android:text="입력"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,113 +242,54 @@
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
-                <include layout="@layout/item_text_edit" />
+                <include layout="@layout/item_richeditor_bar" />
 
             </LinearLayout>
         </HorizontalScrollView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/MyColor_View_Line" />
-        <!--중앙-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <jp.wasabeef.richeditor.RichEditor
-                android:id="@+id/rich_editor"
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/imagesRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="100dp" />
-        <!--하단-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/MyColor_View_Line" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/icons_font"
-                    android:visibility="gone" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_template"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:drawableLeft="@drawable/icons_template_dw"
-                    android:text="템플릿" />
+                    <CheckBox
+                        android:id="@+id/cb_public"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/nanumbold"
+                        android:text="@string/share"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
 
-
-                <TextView
-                    android:id="@+id/iv_media_images_select"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="10dp"
-                    android:drawableLeft="@drawable/icons_photo_dw"
-                    android:text="@string/picture" />
-
-                <CheckBox
-                    android:id="@+id/cb_public"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/nanumbold"
-                    android:textSize="13sp"
-                    android:text="@string/share"/>
-
-                <TextView
-                    android:id="@+id/calendar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    style="@style/TextView"
-                    android:layout_gravity="center"
-                    android:drawableLeft="@drawable/icons_calendar_dw"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/nanumbold"
-                    android:textSize="13sp"
-                    android:text="달력"/>
-
-
-
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/calendar_write"
+                        style="@style/TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:drawableLeft="@drawable/icons_calendar_dw"
+                        android:fontFamily="@font/nanumbold"
+                        android:text="달력"
+                        android:textColor="@color/black"
+                        android:visibility="gone"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </HorizontalScrollView>
 
 
 
         </LinearLayout>
-
     </LinearLayout>
-
-</FrameLayout>
+    </FrameLayout>

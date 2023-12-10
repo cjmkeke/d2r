@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,9 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cjmkeke.mymemo.adapter.AdapterMemo;
+import com.cjmkeke.mymemo.library.ItemTouchHelperCallback;
+import com.cjmkeke.mymemo.library.ItemTouchHelperListener;
 import com.cjmkeke.mymemo.modelClass.ModelMemoWrite;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,12 +38,15 @@ public class DatabaseStorageMemo extends Fragment {
     private AdapterMemo adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<ModelMemoWrite> arrayList;
+
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
     private String email;
     private TextView emptyMessages;
     private TextView loginMessages;
+
+    ItemTouchHelper helper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,33 +95,16 @@ public class DatabaseStorageMemo extends Fragment {
                     adapter = new AdapterMemo(arrayList, getContext());
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+
+//                    helper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter));
+//                    helper.attachToRecyclerView(recyclerView);
+
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
             });
-
-
-//            databaseReference = firebaseDatabase.getReference("memoList").child(firebaseUser.getUid());
-//            databaseReference.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    arrayList.clear();
-//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                        ModelMemoWrite user = snapshot.getValue(ModelMemoWrite.class);
-//                        arrayList.add(user);
-//                    }
-//
-//                    adapter = new AdapterMemo(arrayList, getContext());
-//                    recyclerView.setAdapter(adapter);
-//                    adapter.notifyDataSetChanged();
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//                }
-//            });
         } else {
         }
 

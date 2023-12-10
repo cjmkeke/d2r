@@ -24,10 +24,12 @@ public class ShareUserList extends AppCompatActivity {
 
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
+
     private RecyclerView recyclerView;
     private AdapterMyFriends adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<ModelMyFriends> arrayList;
+
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 

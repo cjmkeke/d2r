@@ -23,7 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cjmkeke.mymemo.library.DTOMemberJoin;
+import com.cjmkeke.mymemo.modelClass.DTOMemberJoin;
 import com.cjmkeke.mymemo.MainActivity;
 import com.cjmkeke.mymemo.R;
 import com.google.android.gms.tasks.OnCompleteListener;

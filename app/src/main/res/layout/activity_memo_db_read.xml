@@ -2,14 +2,17 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MemoDBRead">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
 
         <!--상단바-->
         <LinearLayout
@@ -27,8 +30,23 @@
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:hint="제목 입력"
-                android:inputType="textMultiLine|textNoSuggestions"
+                android:inputType="text"
+                android:maxLines="1"
                 android:paddingLeft="10dp" />
+
+            <TextView
+                android:id="@+id/tv_settings_read"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/title_color"
+                android:fontFamily="@font/nanumregular"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="색상"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/tv_delete"
@@ -39,8 +57,8 @@
                 android:background="@color/white"
                 android:drawableLeft="@drawable/icons_delete_size"
                 android:gravity="center"
-                android:visibility="gone"
-                android:text="@string/remove" />
+                android:text="@string/remove"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_commit"
@@ -59,89 +77,149 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/MyColor_View_Line" />
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <include layout="@layout/item_text_edit" />
-
-            </LinearLayout>
-        </HorizontalScrollView>
 
         <View
+            android:id="@+id/view_position"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/MyColor_View_Line" />
         <!--중앙-->
         <!--중앙-->
         <LinearLayout
+            android:id="@+id/ll_editor_padding"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="10dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:background="#C30000"/>
+                    android:background="#C30000" />
+
                 <View
                     android:layout_width="1dp"
                     android:layout_height="10dp"
                     android:layout_gravity="center"
-                    android:background="@color/MyColor_Pink"/>
+                    android:background="@color/MyColor_Pink" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:gravity="center_vertical"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/lottemartbold"
+                    android:gravity="center_vertical"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="@string/connect_user"
-                    android:fontFamily="@font/lottemartbold"
-                    android:textSize="13sp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/connectedUserRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:gravity="center_vertical"
                     android:layout_gravity="center"
-                    android:visibility="visible"/>
+                    android:gravity="center_vertical"
+                    android:visibility="visible" />
             </LinearLayout>
 
-
-            <jp.wasabeef.richeditor.RichEditor
-                android:id="@+id/editor_read"
+            <LinearLayout
+                android:id="@+id/parent_richeditor"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1">
+
+                                <jp.wasabeef.richeditor.RichEditor
+                                    android:id="@+id/editor_read"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_calendar_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendar_xml"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    app:mcv_selectionMode="multiple" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_code_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/nanumextrabold"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:text="HTML 편집"
+                        android:textColor="@color/MyColor_Yellow"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/btn_html_src"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/button_yellow"
+                        android:fontFamily="@font/nanumextrabold"
+                        android:gravity="center"
+                        android:text="사진 넣기"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/et_read_code_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_gravity="top"
+                    android:background="@null"
+                    android:fontFamily="@font/nanumregular"
+                    android:gravity="top"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+            </LinearLayout>
 
 
             <ScrollView
                 android:id="@+id/sv_history"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_height="100dp"
                 android:background="@color/white"
                 android:visibility="gone">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -156,23 +234,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
                         android:layout_marginTop="10dp"
-                        android:textSize="11sp"
-                        android:textColor="@color/MyColor_Pink"
-                        android:paddingLeft="5dp"
                         android:fontFamily="@font/nanumbold"
-                        android:text="수정된 히스토리 내역"/>
+                        android:paddingLeft="5dp"
+                        android:text="수정된 히스토리 내역"
+                        android:textColor="@color/MyColor_Pink"
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/tv_edit_log"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="11sp"
-                        android:textColor="@color/black"
-                        android:paddingLeft="5dp"
                         android:fontFamily="@font/nanumbold"
-                        android:text="Edit History"/>
+                        android:paddingLeft="5dp"
+                        android:text="Edit History"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
                 </LinearLayout>
-
 
             </ScrollView>
 
@@ -180,22 +257,24 @@
                 android:id="@+id/view_center"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:visibility="gone"
-                android:background="@color/MyColor_View_Line" />
+                android:layout_marginBottom="5dp"
+                android:background="@color/MyColor_View_Line"
+                android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/ll_images_empty"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="vertical">
-            <include
+            <LinearLayout
+                android:id="@+id/ll_images_empty"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_gravity="center"
-                layout="@layout/read_images_recyclerview" />
-        </LinearLayout>
+                android:layout_height="200dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <include
+                    layout="@layout/read_images_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_gravity="center" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -206,78 +285,140 @@
             android:background="@color/MyColor_View_Line" />
 
         <LinearLayout
+            android:id="@+id/ll_calendar_view_memo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icons_calendar_size"
+                android:fontFamily="@font/nanumregular"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:text="모든 일정"
+                android:textColor="@color/black" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scrollbars="vertical">
+
+                <TextView
+                    android:id="@+id/tv_calendar_memo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanumregular"
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+            </ScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_calendar_view_keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_calendar_input"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/textview_white"
+                android:hint="글자 수는 최대 10까지 지원됩니다"
+                android:inputType="text"
+                android:maxLength="10"
+                android:paddingStart="10dp"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btn_calendar_read_view"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:background="@drawable/button_yellow"
+                android:fontFamily="@font/nanumregular"
+                android:text="입력"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/icons_font"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_history"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:drawableLeft="@drawable/icons_history_dw"
-                    android:text="@string/history_list" />
-
-                <!--                히스토리 삭제 메뉴-->
-                <TextView
-                    android:id="@+id/tv_history_delete"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:visibility="gone"
-                    android:drawableLeft="@drawable/icons_delete_size"
-                    android:text="@string/history_remove" />
-
-                <TextView
-                    android:id="@+id/tv_private"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:drawableLeft="@drawable/icons_delete_size"/>
-
-                <TextView
-                    android:id="@+id/tv_photo_upload"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:text="사진 업로드"
-                    android:drawableLeft="@drawable/icons_gallery_size"/>
+                <include layout="@layout/item_richeditor_bar" />
 
             </LinearLayout>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <HorizontalScrollView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
-                    <include layout="@layout/item_text_edit" />
+                    <TextView
+                        android:id="@+id/tv_history"
+                        style="@style/TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:drawableLeft="@drawable/icons_history_dw"
+                        android:text="@string/history_list" />
+
+                    <TextView
+                        android:id="@+id/tv_history_delete"
+                        style="@style/TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:drawableLeft="@drawable/icons_delete_size"
+                        android:text="@string/history_remove"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/tv_private"
+                        style="@style/TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:drawableLeft="@drawable/icons_delete_size" />
+
+                    <TextView
+                        android:id="@+id/tv_connect_user_visibility"
+                        style="@style/TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:drawableLeft="@drawable/icon_connect_user_size" />
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -287,4 +428,54 @@
 
     </LinearLayout>
 
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/ll_start_tip"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginLeft="40dp"-->
+<!--        android:layout_marginTop="200dp"-->
+<!--        android:layout_marginRight="40dp"-->
+<!--        android:layout_marginBottom="210dp"-->
+<!--        android:background="@drawable/activity_corner_connect_10dp_paddng"-->
+<!--        android:orientation="vertical">-->
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:textSize="24sp"-->
+<!--                android:fontFamily="@font/nanumextrabold"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:gravity="center"-->
+<!--                android:text="수정하고 싶다면 길게 5초 누르세요"/>-->
+
+<!--        </LinearLayout>-->
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:gravity="right"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_confrim"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginRight="10dp"-->
+<!--                android:fontFamily="@font/nanumextrabold"-->
+<!--                android:gravity="right|center"-->
+<!--                android:text="다음부터 팁 안보이기"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="20sp" />-->
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
 </FrameLayout>

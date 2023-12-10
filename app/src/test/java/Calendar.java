@@ -17,6 +17,5 @@ public class Calendar extends Activity {
 
         calendar = findViewById(R.id.calendarView);
 
-        return null;
     }
 }

@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cjmkeke.mymemo.adapter.AdapterMemoShare;
 import com.cjmkeke.mymemo.modelClass.ModelMemoWrite;
@@ -23,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,9 +38,6 @@ public class DatabaseStorageMemoShare extends Fragment {
     private ArrayList<ModelMemoWrite> arrayList;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-
-    private String friendToken;
-    private ArrayList<String> friendsArrays;
 
     private TextView emptyMessages;
     private TextView loginMessages;
@@ -71,36 +68,58 @@ public class DatabaseStorageMemoShare extends Fragment {
         if (firebaseUser != null) {
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference("memoList").child(firebaseUser.getUid());
-            ssss();
-        } else {
+            fetchMemoDataForFriends();
         }
-
         return viewGroup;
     }
 
-    private void ssss() {
-        friendsArrays = new ArrayList<>();
-
-        Query query = firebaseDatabase.getReference("registeredUser")
-                .child(firebaseUser.getUid())
-                .child("myFriend");
-
-        query.orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
+    private void fetchMemoDataForFriends() {
+        Query query = firebaseDatabase.getReference().child("memoList");
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot tokenSnap : snapshot.getChildren()) {
-                    friendToken = tokenSnap.getValue(String.class);
-                    if (friendToken != null) {
-                        friendsArrays.add(friendToken);
+                ArrayList<ModelMemoWrite> tempList = new ArrayList<>(); // 변경된 데이터를 저장할 임시 목록
+
+                for (DataSnapshot memoSnap : snapshot.getChildren()) {
+                    for (DataSnapshot userSnap : memoSnap.getChildren()) {
+                        ModelMemoWrite memo = userSnap.getValue(ModelMemoWrite.class);
+
+                        // openToken 필드가 사용자의 토큰을 포함하고 있는지 확인
+                        DataSnapshot openTokenSnap = userSnap.child("openToken");
+                        if (memo != null && openTokenSnap.hasChild(firebaseUser.getUid())) {
+                            tempList.add(memo);
+                        }
                     }
                 }
 
-                // 친구 토큰이 있는지 확인하고 나서 메모 데이터를 가져오도록 합니다.
-                if (!friendsArrays.isEmpty()) {
-                    fetchMemoDataForFriends();
+                // 중복 제거를 위해 HashSet을 사용합니다
+                HashSet<ModelMemoWrite> uniqueMemoSet = new HashSet<>(tempList);
+
+                // 중복이 없는 값을 저장할 ArrayList를 만듭니다
+                ArrayList<ModelMemoWrite> uniqueMemoList = new ArrayList<>(uniqueMemoSet);
+
+                // 정렬
+                Collections.sort(uniqueMemoList, new Comparator<ModelMemoWrite>() {
+                    @Override
+                    public int compare(ModelMemoWrite o1, ModelMemoWrite o2) {
+                        return Long.compare(o2.getRecyclerDateList(), o1.getRecyclerDateList());
+                    }
+                });
+
+                if (uniqueMemoList.isEmpty()){
+                    emptyMessages.setVisibility(View.VISIBLE);
                 } else {
-                    // 친구가 없는 경우 처리
+                    emptyMessages.setVisibility(View.GONE);
                 }
+
+                Log.v("T",uniqueMemoList.toString());
+
+                // RecyclerView에 데이터 설정
+                arrayList.clear();
+                arrayList.addAll(uniqueMemoList);
+
+                // 어댑터를 업데이트합니다.
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -109,68 +128,4 @@ public class DatabaseStorageMemoShare extends Fragment {
             }
         });
     }
-
-
-
-    private void fetchMemoDataForFriends() {
-        ArrayList<ModelMemoWrite> tempList = new ArrayList<>(); // 모든 메모를 저장할 임시 목록
-
-        for (String token : friendsArrays) {
-            if (token != null) {
-                Query query = firebaseDatabase.getReference().child("memoList").child(token);
-                query.orderByChild("recyclerDateList").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot showSnap : snapshot.getChildren()) {
-                            ModelMemoWrite user = showSnap.getValue(ModelMemoWrite.class);
-                            if (user != null && user.isPublicKey()) {
-                                tempList.add(user);
-                            }
-                        }
-
-                        // HashSet을 사용하여 중복 제거
-                        HashSet<ModelMemoWrite> uniqueMemoSet = new HashSet<>(tempList);
-
-                        // HashSet을 다시 ArrayList로 변환
-                        ArrayList<ModelMemoWrite> uniqueMemoList = new ArrayList<>(uniqueMemoSet);
-
-                        // 모든 친구의 메모를 가져왔을 때 실행되는 곳
-                        // recyclerDateList를 기준으로 내림차순 정렬
-                        Collections.sort(uniqueMemoList, new Comparator<ModelMemoWrite>() {
-                            @Override
-                            public int compare(ModelMemoWrite o1, ModelMemoWrite o2) {
-                                return Long.compare(o2.getRecyclerDateList(), o1.getRecyclerDateList());
-                            }
-                        });
-                        if (uniqueMemoList.isEmpty()){
-                            emptyMessages.setVisibility(View.VISIBLE);
-                        } else {
-                            emptyMessages.setVisibility(View.GONE);
-                        }
-
-                        Log.v("T",uniqueMemoList.toString());
-
-
-                        // RecyclerView에 데이터 설정
-                        arrayList.clear();
-                        arrayList.addAll(uniqueMemoList);
-
-                        // 어댑터를 업데이트합니다.
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // 데이터베이스 오류 처리
-                    }
-                });
-            }
-        }
-    }
-
-
-
-
-
 }
-
